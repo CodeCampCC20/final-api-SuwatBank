@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Doctor {
+  id             Int          @id @default(autoincrement())
+  username       String       @unique
+  password       String       @db.VarChar(255)
+  specialization String       @default("General")
+  doctorNote     DoctorNote[]
+}
+
+model DoctorNote {
+  id       Int      @id @default(autoincrement())
+  note     String   @db.VarChar(255)
+  password String   @db.VarChar(255)
+  Doctor   Doctor?  @relation(fields: [doctorId], references: [id])
+  doctorId Int?
+  User     User?    @relation(fields: [userId], references: [id])
+  userId   Int?
+  createAt DateTime @updatedAt @map("create_at")
+  updateAt DateTime @updatedAt @map("update_at")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  username     String         @unique
+  password     String         @db.VarChar(255)
+  doctorNote   DoctorNote[]
+  HealthRecord HealthRecord[]
+}
+
+model HealthRecord {
+  id       Int      @id @default(autoincrement())
+  type     String
+  value    String
+  createAt DateTime @updatedAt @map("create_at")
+  updateAt DateTime @updatedAt @map("update_at")
+  User     User?    @relation(fields: [userId], references: [id])
+  userId   Int?
+}
