@@ -19,11 +19,11 @@ export const docProfile = async(req, res, next) => {
   }
 }
 
-export const editDoc = async(req,res,next)=>{
+export const updateDoc = async(req,res,next)=>{
   try {
     const { username, password, specialization} = req.body
-    const {id} = req.doctor.id
-
+    const {id} = req.params
+    const hashPassword = bcrypt.hashSync(password,10)
     console.log(id);
     const doctor = await prisma.doctor.update({
       where:{
@@ -31,11 +31,11 @@ export const editDoc = async(req,res,next)=>{
       },
       data:{
         username: username,
-        password: password,
+        password: hashPassword,
         specialization: specialization
       }
     })
-    res.json({message: `Update Role to ${doctor.name}`})
+    res.json({message: `Update Doc profile`})
   } catch (error) {
     next(error)
   }
@@ -67,7 +67,7 @@ export const updateUser = async(req,res,next)=>{
     const hashPassword = bcrypt.hashSync(password,10)
     const user = await prisma.user.update({
       where:{
-        id : req.user.id
+        id : Number(id)
       },
       data:{
         username: username,
@@ -75,6 +75,7 @@ export const updateUser = async(req,res,next)=>{
       }
     })
     res.json({id: user.id, username: user.username})
+    console.log(username, password)
   } catch (error) {
     next(error)
   }

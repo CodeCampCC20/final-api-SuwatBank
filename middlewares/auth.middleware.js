@@ -33,7 +33,6 @@ export const authCheckUser = (req, res, next) => {
         createError(401, "Token is invalid")
       }
       req.user = decode
-      console.log(decode)
       next();
     })
   } catch (error) {
