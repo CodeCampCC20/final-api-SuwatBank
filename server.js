@@ -1,7 +1,9 @@
 import express from "express"
 import morgan from "morgan";
 import authRouter from "./routes/auth.js";
-import userRouter from "./routes/user.js"
+import userRouter from "./routes/user.js";
+import doctorRouter from "./routes/doctor.js";
+import docRouter from "./routes/doc.js"
 import error from "./util/error.js";
 import notFoundError from "./util/errorNotfound.js";
 
@@ -16,7 +18,10 @@ app.use(morgan("dev"))
 // })
 
 app.use("/auth", authRouter);
-app.use("/doctors", userRouter);
+app.use("/doctors", doctorRouter);
+app.use("/users", userRouter);
+app.use("/health-records", docRouter);
+app.use("/doctor-notes", docRouter);
 
 app.use(error);
 app.use(notFoundError);

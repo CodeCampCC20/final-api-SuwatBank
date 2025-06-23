@@ -19,7 +19,6 @@ model Doctor {
 model DoctorNote {
   id       Int      @id @default(autoincrement())
   note     String   @db.VarChar(255)
-  password String   @db.VarChar(255)
   Doctor   Doctor?  @relation(fields: [doctorId], references: [id])
   doctorId Int?
   User     User?    @relation(fields: [userId], references: [id])
